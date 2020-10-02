@@ -28,7 +28,7 @@ if not os.path.isfile("div.txt"):
 #print("\033[H\033[J")
 def start():
     os.system("cls")
-    slow_print("\n\nWelcome to the Math-Test-1.1!")
+    slow_print("\n\nWelcome to the Math-Test-v1.1.1!")
     time.sleep(0.3)
     os.system("cls")
     slow_print("\n\n(1) ========= Play =========\n(2) === View Leaderboard ===\n(3) ========= Exit =========")
@@ -267,7 +267,7 @@ def multi():
 
 def div():
     os.system("cls")
-    print("Results will be rounded to the 2nd decimal (e.g: 0.75). EXCEPT: whole nums/nums with only one decimal place (0.5).\n")
+    print("Results will be rounded UP to the 2nd decimal (e.g: 0.75, not 0.746). EXCEPT: whole nums/nums with only one decimal place (0.5).\n")
     minimum = input("Min: ")
     maximum = input("Max: ")
     os.system("cls")
@@ -285,15 +285,26 @@ def div():
     while question <= 20:
         rdm_1 = random.randint(int(minimum),int(maximum))
         rdm_2 = random.randint(int(minimum),int(maximum))
-        answered = round(rdm_1 / rdm_2, 2)
-        print(f"\n{rdm_1} / {rdm_2} ({question}/20)")
-        answer = input("\n")
-        question += 1
-        if float(answer) == answered:
-            correct += 1
-            print("\nCorrect!\n━━━━━━━━━━━━")
-        else:
-            print(f"\nWrong. The answer is {answered}.\n━━━━━━━━━━━━")
+        if rdm_1 > rdm_2:    
+            answered = round(rdm_1 / rdm_2, 2)
+            print(f"\n{rdm_1} / {rdm_2} ({question}/20)")
+            answer = input("\n")
+            question += 1
+            if float(answer) == answered:
+                correct += 1
+                print("\nCorrect!\n━━━━━━━━━━━━")
+            else:
+                print(f"\nWrong. The answer is {answered}.\n━━━━━━━━━━━━")
+        elif rdm_2 > rdm_1:
+            answered = round(rdm_2 / rdm_1, 2)
+            print(f"\n{rdm_2} / {rdm_1} ({question}/20)")
+            answer = input("\n")
+            question += 1
+            if float(answer) == answered:
+                correct += 1
+                print("\nCorrect!\n━━━━━━━━━━━━")
+            else:
+                print(f"\nWrong. The answer is {answered}.\n━━━━━━━━━━━━")
     acc = correct / 20 * 100
     end = time.time()
     timing = str(datetime.timedelta(seconds=round(end-start)))
