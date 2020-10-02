@@ -6,14 +6,29 @@ import datetime
 
 def slow_print(s):
     for c in s:
-        sys.stdout.write( '%s' % c )
+        sys.stdout.write(c)
         sys.stdout.flush()
         time.sleep(0.02)
+
+
+if not os.path.isfile("add.txt"):
+    file = open("add.txt", "w+")
+    file.close()
+if not os.path.isfile("sub.txt"):
+    file = open("sub.txt", "w+")
+    file.close()
+if not os.path.isfile("multi.txt"):
+    file = open("multi.txt", "w+")
+    file.close()
+if not os.path.isfile("div.txt"):
+    file = open("div.txt", "w+")
+    file.close()
+
 
 #print("\033[H\033[J")
 def start():
     os.system("cls")
-    slow_print("\n\nWelcome to the Math-Test-1.0!")
+    slow_print("\n\nWelcome to the Math-Test-1.1!")
     time.sleep(0.3)
     os.system("cls")
     slow_print("\n\n(1) ========= Play =========\n(2) === View Leaderboard ===\n(3) ========= Exit =========")
@@ -22,32 +37,78 @@ def start():
     if select == "1":
         menu()
     if select == "2":
-        leaderboard()
+        leaderboard_menu()
     if select == "3":
-        slow_print("See you next time!")
+        slow_print("\nSee you next time!")
         exit()
 
-def leaderboard():
-    try:
+def leaderboard_menu():
+    os.system("cls")
+    print("Choose a leaderboard.\n")
+    slow_print("(1) - Addition\n(2) - Subtraction\n(3) - Multiplication\n(4) - Division\n(5) - Menu")
+    lb = input("\n\n")
+    if lb in ("1"):
         print(os.system("cls"))
-        print ("\n ⬇ Leaderboard ⬇\nNAME  \tSCORE    TIME\t       DATE") #LEADERBOARD SECTION
-        with open("lb.txt") as f:
+        print ("\n ⬇ Leaderboard ⬇\nNAME  \tSCORE    TIME\t       DATE\t Values")
+        with open("add.txt") as f:
             lines = [i.strip().split(",") for i in f]
-            #sortedList = sorted(lines, key = lambda y: (float(y[1])), reverse=True); Idk if I need this (probably not)
             sortedList = sorted(lines, key = lambda y: y[2])
             sortedList = sorted(sortedList, key = lambda y: (float(y[1])), reverse=True)
-            for name, score, times, date in sortedList[:5]:
-                print(name+ "\t " +score + "\t" +times + "     " + date)
+            for name, score, times, date, mini, maxi in sortedList[:5]:
+                print(name+ "\t " + score + "\t" +times + "     " + date + "\t  "+mini+"/"+maxi)
         opt = input("\n(1) - Menu; (2) - Exit: ")
         if opt in ("1"):
             start()
         elif opt in ("2"):
             slow_print("See you next time!")
             exit()
-    except FileNotFoundError:
-        file = open("lb.txt", "w+")
-        file.close()
-        leaderboard()
+    elif lb in ("2"):
+        print(os.system("cls"))
+        print ("\n ⬇ Leaderboard ⬇\nNAME  \tSCORE    TIME\t       DATE\t Values")
+        with open("sub.txt") as f:
+            lines = [i.strip().split(",") for i in f]
+            sortedList = sorted(lines, key = lambda y: y[2])
+            sortedList = sorted(sortedList, key = lambda y: (float(y[1])), reverse=True)
+            for name, score, times, date, mini, maxi in sortedList[:5]:
+                print(name+ "\t " + score + "\t" +times + "     " + date + "\t  "+mini+"/"+maxi)
+        opt = input("\n(1) - Menu; (2) - Exit: ")
+        if opt in ("1"):
+            start()
+        elif opt in ("2"):
+            slow_print("See you next time!")
+            exit()
+    elif lb in ("3"):
+        print(os.system("cls"))
+        print ("\n ⬇ Leaderboard ⬇\nNAME  \tSCORE    TIME\t       DATE\t Values")
+        with open("multi.txt") as f:
+            lines = [i.strip().split(",") for i in f]
+            sortedList = sorted(lines, key = lambda y: y[2])
+            sortedList = sorted(sortedList, key = lambda y: (float(y[1])), reverse=True)
+            for name, score, times, date, mini, maxi in sortedList[:5]:
+                print(name+ "\t " + score + "\t" +times + "     " + date + "\t  "+mini+"/"+maxi)
+        opt = input("\n(1) - Menu; (2) - Exit: ")
+        if opt in ("1"):
+            start()
+        elif opt in ("2"):
+            slow_print("See you next time!")
+            exit()
+    elif lb in ("4"):
+        print(os.system("cls"))
+        print ("\n ⬇ Leaderboard ⬇\nNAME  \tSCORE    TIME\t       DATE\t Values")
+        with open("div.txt") as f:
+            lines = [i.strip().split(",") for i in f]
+            sortedList = sorted(lines, key = lambda y: y[2])
+            sortedList = sorted(sortedList, key = lambda y: (float(y[1])), reverse=True)
+            for name, score, times, date, mini, maxi in sortedList[:5]:
+                print(name+ "\t " + score + "\t" +times + "     " + date + "\t  "+mini+"/"+maxi)
+        opt = input("\n(1) - Menu; (2) - Exit: ")
+        if opt in ("1"):
+            start()
+        elif opt in ("2"):
+            slow_print("See you next time!")
+            exit()
+    elif lb in ("5"):
+        menu()
 
 def menu():
     slow_print("Choose an operator.")
@@ -101,11 +162,16 @@ def addition():
     score = int(acc)
     today = date.today()
     d1 = today.strftime("%d/%m/%Y")
-    file = open ("lb.txt", "a")
+    file = open ("add.txt", "a")
     user = input("Enter a name to save your highscore: ")
-    file.write(user+","+str(score)+","+timing+","+d1)
+    file.write(user+","+str(score)+","+timing+","+d1+","+str(minimum)+","+str(maximum))
     file.write("\n")
-    menu()
+    slow_print("\nPlay again? (Y/N)")
+    again = input("\n")
+    if again.lower() in ("y", "yes"):
+        addition()
+    elif again.lower() in("n", "no"):
+        start()
 
 def sub():
     os.system("cls")
@@ -119,6 +185,7 @@ def sub():
     slow_print("1...")
     time.sleep(1)
     os.system("cls")
+    start = time.time()
     question = 1
     correct = 0
     false = 0
@@ -141,11 +208,16 @@ def sub():
     score = int(acc)
     today = date.today()
     d1 = today.strftime("%d/%m/%Y")
-    file = open ("lb.txt", "a")
+    file = open ("sub.txt", "a")
     user = input("Enter a name to save your highscore: ")
-    file.write(user+","+str(score)+","+timing+","+d1)
+    file.write(user+","+str(score)+","+timing+","+d1+","+str(minimum)+","+str(maximum))
     file.write("\n")
-    menu()
+    slow_print("\nPlay again? (Y/N)")
+    again = input("\n")
+    if again.lower() in ("y", "yes"):
+        sub()
+    elif again.lower() in("n", "no"):
+        start()
 
 def multi():
     os.system("cls")
@@ -184,9 +256,14 @@ def multi():
     d1 = today.strftime("%d/%m/%Y")
     file = open ("lb.txt", "a")
     user = input("Enter a name to save your highscore: ")
-    file.write(user+","+str(score)+","+timing+","+d1)
+    file.write(user+","+str(score)+","+timing+","+d1+","+str(minimum)+","+str(maximum))
     file.write("\n")
-    menu()
+    slow_print("\nPlay again? (Y/N)")
+    again = input("\n")
+    if again.lower() in ("y", "yes"):
+        multi()
+    elif again.lower() in("n", "no"):
+        start()
 
 def div():
     os.system("cls")
@@ -226,8 +303,13 @@ def div():
     d1 = today.strftime("%d/%m/%Y")
     file = open ("lb.txt", "a")
     user = input("Enter a name to save your highscore: ")
-    file.write(user+","+str(score)+","+timing+","+d1)
+    file.write(user+","+str(score)+","+timing+","+d1+","+str(minimum)+","+str(maximum))
     file.write("\n")
-    menu()
+    slow_print("\nPlay again? (Y/N)")
+    again = input("\n")
+    if again.lower() in ("y", "yes"):
+        div()
+    elif again.lower() in("n", "no"):
+        start()
 
 start()
